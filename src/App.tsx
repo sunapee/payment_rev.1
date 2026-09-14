@@ -31,10 +31,10 @@ export default function App() {
   const [method, setMethod] = useState<PaymentMethod>('前受入金');
   const [currency, setCurrency] = useState<CurrencyType>('USD');
   const [paytype, setPaytype] = useState<PayType>('全部');
-  const [customer, setCustomer] = useState<string>('株式会社NCCインターナショナル');
+  const [customer, setCustomer] = useState<string>('');
 
-  const [rateUsdInput, setRateUsdInput] = useState<string>('103.0');
-  const [rateEurInput, setRateEurInput] = useState<string>('120.0');
+  const [rateUsdInput, setRateUsdInput] = useState<string>('');
+  const [rateEurInput, setRateEurInput] = useState<string>('');
 
   // Rate validation & computed values
   const { todayRateUsd, rateUsdError } = useMemo(() => {
@@ -58,14 +58,14 @@ export default function App() {
   const [plans, setPlans] = useState<PlanItem[]>([
     {
       id: 'plan-1',
-      planNumber: 'PL-2026-001',
-      foreignAmountInput: '1500',
+      planNumber: '',
+      foreignAmountInput: '',
       date: todayDateStr,
     },
   ]);
 
   // 4. Col 3 States (Deposit Input & Manual Overrides)
-  const [depositAmountInput, setDepositAmountInput] = useState<string>('1500');
+  const [depositAmountInput, setDepositAmountInput] = useState<string>('');
 
   // Manual values and raw user inputs for Foreign Currency mode
   const [manualDepositInput, setManualDepositInput] = useState<string>('');
@@ -219,11 +219,17 @@ export default function App() {
   useEffect(() => {
     if (lastDepositValue !== depositAmount || !userEditedManual) {
       setLastDepositValue(depositAmount);
-      setManualDepositInput(autoJpyDeposit ? autoJpyDeposit.toLocaleString() : '0');
-      setManualProfitInput(autoProfitMargin ? autoProfitMargin.toLocaleString() : '0');
-      setManualFeeInput(autoFeeAmount ? autoFeeAmount.toLocaleString() : '0');
+      if (depositAmountInput.trim() !== '') {
+        setManualDepositInput(autoJpyDeposit ? autoJpyDeposit.toLocaleString() : '0');
+        setManualProfitInput(autoProfitMargin ? autoProfitMargin.toLocaleString() : '0');
+        setManualFeeInput(autoFeeAmount ? autoFeeAmount.toLocaleString() : '0');
+      } else {
+        setManualDepositInput('');
+        setManualProfitInput('');
+        setManualFeeInput('');
+      }
     }
-  }, [depositAmount, autoJpyDeposit, autoProfitMargin, autoFeeAmount, lastDepositValue, userEditedManual]);
+  }, [depositAmount, depositAmountInput, autoJpyDeposit, autoProfitMargin, autoFeeAmount, lastDepositValue, userEditedManual]);
 
   // Parse manual values according to Python update_manual_input logic
   // "カンマを削除して数値に変換。入力が空や無効の場合は自動計算値に戻す"
@@ -257,68 +263,37 @@ export default function App() {
 
   const handleResetManualToAuto = useCallback(() => {
     setUserEditedManual(false);
-    setManualDepositInput(autoJpyDeposit.toLocaleString());
-    setManualProfitInput(autoProfitMargin.toLocaleString());
-    setManualFeeInput(autoFeeAmount.toLocaleString());
-  }, [autoJpyDeposit, autoProfitMargin, autoFeeAmount]);
-
-  // Sample data presets
-  const handleLoadSample = (type: 'adv_usd' | 'urikake_jpy' | 'urikake_eur') => {
-    if (type === 'adv_usd') {
-      setMethod('前受入金');
-      setCurrency('USD');
-      setPaytype('全部');
-      setCustomer('Global Tech Solutions Inc.');
-      setRateUsdInput('105.50');
-      setPlans([
-        { id: 'sample-1', planNumber: 'PL-2026-US01', foreignAmountInput: '1200', date: todayDateStr },
-        { id: 'sample-2', planNumber: 'PL-2026-US02', foreignAmountInput: '800', date: todayDateStr },
-      ]);
-      setDepositAmountInput('2000');
-      setUserEditedManual(false);
-    } else if (type === 'urikake_jpy') {
-      setMethod('売掛');
-      setCurrency('JPY');
-      setPaytype('全部');
-      setCustomer('株式会社日本物流システム');
-      setPlans([
-        { id: 'sample-1', planNumber: 'PL-JP-881', foreignAmountInput: '320000', date: todayDateStr },
-        { id: 'sample-2', planNumber: 'PL-JP-882', foreignAmountInput: '180000', date: todayDateStr },
-      ]);
-      setDepositAmountInput('499560');
-      setUserEditedManual(false);
-    } else if (type === 'urikake_eur') {
-      setMethod('売掛');
-      setCurrency('EUR');
-      setPaytype('一部');
-      setCustomer('EuroTrade Logistics GmbH');
-      setRateEurInput('124.80');
-      setPlans([
-        { id: 'sample-1', planNumber: 'INV-EU-2026-1', foreignAmountInput: '2500', date: todayDateStr },
-        { id: 'sample-2', planNumber: 'INV-EU-2026-2', foreignAmountInput: '1500', date: todayDateStr },
-      ]);
-      setDepositAmountInput('4000');
-      setUserEditedManual(false);
+    if (depositAmountInput.trim() !== '') {
+      setManualDepositInput(autoJpyDeposit.toLocaleString());
+      setManualProfitInput(autoProfitMargin.toLocaleString());
+      setManualFeeInput(autoFeeAmount.toLocaleString());
+    } else {
+      setManualDepositInput('');
+      setManualProfitInput('');
+      setManualFeeInput('');
     }
-  };
+  }, [depositAmountInput, autoJpyDeposit, autoProfitMargin, autoFeeAmount]);
 
   const handleReset = () => {
     setMethod('前受入金');
     setCurrency('USD');
     setPaytype('全部');
     setCustomer('');
-    setRateUsdInput('103.0');
-    setRateEurInput('120.0');
+    setRateUsdInput('');
+    setRateEurInput('');
     setPlans([
-      { id: 'plan-1', planNumber: 'PL-001', foreignAmountInput: '', date: todayDateStr },
+      { id: 'plan-1', planNumber: '', foreignAmountInput: '', date: todayDateStr },
     ]);
     setDepositAmountInput('');
+    setManualDepositInput('');
+    setManualProfitInput('');
+    setManualFeeInput('');
     setUserEditedManual(false);
   };
 
   // CSV Export with UTF-8 BOM for Japanese Excel
   const handleExportCsv = () => {
-    const headers = ['No', '通貨', '外貨金額', 'JPY換算額', '日付'];
+    const headers = ['No', '通貨', '外貨金額', 'JPY換算額', '売掛日'];
     const rows = planDetails.map((r) => [
       `"${r.No}"`,
       r.通貨,
@@ -393,7 +368,6 @@ export default function App() {
         onPrint={handlePrint}
         onExportCsv={handleExportCsv}
         onReset={handleReset}
-        onLoadSample={handleLoadSample}
         onLogout={handleLogout}
         isPrintPreview={isPrintPreview}
         setIsPrintPreview={setIsPrintPreview}

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Lock, ShieldCheck, KeyRound, ArrowRight } from 'lucide-react';
+import { Lock, ShieldCheck, ArrowRight } from 'lucide-react';
 
 interface PasswordScreenProps {
   onSuccess: () => void;
@@ -28,7 +28,6 @@ export const PasswordScreen: React.FC<PasswordScreenProps> = ({ onSuccess }) => 
           </div>
           <div className="text-center">
             <h1 className="text-xl font-bold text-slate-800">入金伝票作成システム</h1>
-            <p className="text-xs text-slate-500 mt-1">NCC 財務会計・入金管理ポータル</p>
           </div>
         </div>
 
@@ -37,15 +36,10 @@ export const PasswordScreen: React.FC<PasswordScreenProps> = ({ onSuccess }) => 
             <div>
               <label 
                 htmlFor="password-input" 
-                className="block text-sm font-medium text-slate-700 mb-1 flex items-center justify-between"
+                className="block text-sm font-medium text-slate-700 mb-1 flex items-center gap-1.5"
               >
-                <span className="flex items-center gap-1.5">
-                  <Lock className="w-4 h-4 text-slate-500" />
-                  パスワードを入力してください
-                </span>
-                <span className="text-xs text-blue-600 bg-blue-50 px-2 py-0.5 rounded font-mono">
-                  初期: 4649
-                </span>
+                <Lock className="w-4 h-4 text-slate-500" />
+                パスワードを入力してください
               </label>
               <div className="relative">
                 <input
@@ -78,18 +72,6 @@ export const PasswordScreen: React.FC<PasswordScreenProps> = ({ onSuccess }) => 
                 </p>
               )}
             </div>
-
-            <button
-              type="button"
-              onClick={() => {
-                setPassword('4649');
-                onSuccess();
-              }}
-              className="w-full py-2 px-3 text-xs text-slate-500 hover:text-slate-700 hover:bg-slate-50 rounded border border-slate-200 flex items-center justify-center gap-1.5 transition-colors"
-            >
-              <KeyRound className="w-3.5 h-3.5" />
-              ワンクリックログイン (4649 を適用)
-            </button>
           </form>
         </div>
 

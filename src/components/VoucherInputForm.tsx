@@ -205,7 +205,7 @@ export const VoucherInputForm: React.FC<VoucherInputFormProps> = ({
             type="text"
             value={customer}
             onChange={(e) => setCustomer(e.target.value)}
-            placeholder="例: 株式会社サンプル商事"
+            placeholder=""
             className="w-full px-3 py-2 text-sm bg-slate-50 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:bg-white transition"
           />
         </div>
@@ -226,7 +226,7 @@ export const VoucherInputForm: React.FC<VoucherInputFormProps> = ({
               step="0.01"
               value={rateUsdInput}
               onChange={(e) => setRateUsdInput(e.target.value)}
-              placeholder="103.0"
+              placeholder="入力"
               className={`w-full px-3 py-1.5 text-sm bg-white border rounded-md font-mono focus:ring-2 focus:outline-none ${
                 rateUsdError ? 'border-red-400 focus:ring-red-200' : 'border-amber-300 focus:ring-amber-400'
               }`}
@@ -257,7 +257,7 @@ export const VoucherInputForm: React.FC<VoucherInputFormProps> = ({
               step="0.01"
               value={rateEurInput}
               onChange={(e) => setRateEurInput(e.target.value)}
-              placeholder="120.0"
+              placeholder="入力"
               className={`w-full px-3 py-1.5 text-sm bg-white border rounded-md font-mono focus:ring-2 focus:outline-none ${
                 rateEurError ? 'border-red-400 focus:ring-red-200' : 'border-amber-300 focus:ring-amber-400'
               }`}
@@ -365,13 +365,7 @@ export const VoucherInputForm: React.FC<VoucherInputFormProps> = ({
                   type="text"
                   value={item.planNumber}
                   onChange={(e) => updatePlan(i, 'planNumber', e.target.value)}
-                  placeholder={
-                    method === '前受入金'
-                      ? `計画番号 ${i + 1}`
-                      : currency === 'JPY'
-                      ? '例: PL-2026-001'
-                      : '例: INV-2026-US01'
-                  }
+                  placeholder=""
                   className="w-full px-2.5 py-1.5 text-xs bg-white border border-slate-300 rounded-md focus:ring-2 focus:ring-blue-500"
                 />
 

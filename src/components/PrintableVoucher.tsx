@@ -37,14 +37,6 @@ export const PrintableVoucher: React.FC<PrintableVoucherProps> = ({
   onBack,
   onPrint,
 }) => {
-  const currentDate = new Date().toLocaleDateString('ja-JP', {
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-  });
-
-  const voucherNo = `VCH-${new Date().getFullYear()}-${String(new Date().getMonth() + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 900) + 100)}`;
-
   const totalLabel = method === '前受入金' ? '合計前受額' : '合計売掛額';
 
   return (
@@ -83,17 +75,12 @@ export const PrintableVoucher: React.FC<PrintableVoucherProps> = ({
                 {method}
               </span>
             </div>
-            <p className="text-xs text-slate-600 mt-1">NCC 財務会計管理システム</p>
           </div>
 
-          {/* Japanese Stamp Boxes (承認 / 審査 / 担当) */}
+          {/* Japanese Stamp Boxes (チェッカー / 担当) */}
           <div className="flex border border-slate-900 text-center text-xs">
             <div className="w-16 border-r border-slate-900">
-              <div className="bg-slate-100 border-b border-slate-900 py-0.5 text-[11px] font-bold">承認</div>
-              <div className="h-14"></div>
-            </div>
-            <div className="w-16 border-r border-slate-900">
-              <div className="bg-slate-100 border-b border-slate-900 py-0.5 text-[11px] font-bold">審査</div>
+              <div className="bg-slate-100 border-b border-slate-900 py-0.5 text-[11px] font-bold">チェッカー</div>
               <div className="h-14"></div>
             </div>
             <div className="w-16">
@@ -109,7 +96,7 @@ export const PrintableVoucher: React.FC<PrintableVoucherProps> = ({
             <div className="flex">
               <span className="w-24 text-slate-500 font-medium">顧客名:</span>
               <span className="font-bold text-sm border-b border-dotted border-slate-400 pb-0.5 flex-1">
-                {customer || '（顧客名未入力）'} 御中
+                {customer || '（顧客名未入力）'}
               </span>
             </div>
             <div className="flex">
@@ -120,37 +107,28 @@ export const PrintableVoucher: React.FC<PrintableVoucherProps> = ({
               <span className="w-24 text-slate-500 font-medium">通貨・レート:</span>
               <span className="font-mono">
                 {currency}
-                {currency !== 'JPY' && ` (本日レート: ${todayRate.toFixed(2)}円 / 基準: ${baseRate.toFixed(2)}円)`}
+                {currency !== 'JPY' && ` (当日レート: ${todayRate.toFixed(2)}円 / 基準: ${baseRate.toFixed(2)}円)`}
               </span>
             </div>
           </div>
 
-          <div className="space-y-2 text-right">
-            <div className="flex justify-end">
-              <span className="text-slate-500 font-medium mr-2">発行日:</span>
-              <span className="font-mono font-medium">{currentDate}</span>
-            </div>
-            <div className="flex justify-end">
-              <span className="text-slate-500 font-medium mr-2">伝票番号:</span>
-              <span className="font-mono font-bold">{voucherNo}</span>
-            </div>
-          </div>
+          <div></div>
         </div>
 
         {/* Table of Plans / Invoices */}
         <div className="mb-6">
           <h3 className="text-xs font-bold text-slate-800 mb-2">
-            【{method === '前受入金' ? '計画明細' : currency === 'JPY' ? '売掛明細' : 'Invoice明細'}】
+            【明細】
           </h3>
           <table className="w-full text-xs border border-slate-900 border-collapse">
             <thead>
               <tr className="bg-slate-100 border-b border-slate-900 font-bold text-slate-800">
                 <th className="py-2 px-2 border-r border-slate-900 text-center w-12">行</th>
-                <th className="py-2 px-3 border-r border-slate-900 text-left">番号 (計画 / Invoice)</th>
+                <th className="py-2 px-3 border-r border-slate-900 text-left">番号</th>
                 <th className="py-2 px-2 border-r border-slate-900 text-center w-14">通貨</th>
                 <th className="py-2 px-3 border-r border-slate-900 text-right">外貨金額</th>
                 <th className="py-2 px-3 border-r border-slate-900 text-right">JPY換算額</th>
-                <th className="py-2 px-3 text-center w-28">日付</th>
+                <th className="py-2 px-3 text-center w-28">売掛日</th>
               </tr>
             </thead>
             <tbody>
@@ -188,7 +166,7 @@ export const PrintableVoucher: React.FC<PrintableVoucherProps> = ({
         {/* Totals & Settlement Box */}
         <div className="border border-slate-900 p-4 bg-slate-50/50 text-xs mb-6">
           <h4 className="font-bold text-slate-800 mb-2.5 pb-1 border-b border-slate-300">
-            金額詳細・入金精算合計
+            金額詳細
           </h4>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
             <div className="border-r border-slate-300 pr-2">
@@ -216,12 +194,6 @@ export const PrintableVoucher: React.FC<PrintableVoucherProps> = ({
               </span>
             </div>
           </div>
-        </div>
-
-        {/* Remarks / Footer */}
-        <div className="border-t border-slate-200 pt-3 text-[10px] text-slate-500 flex justify-between">
-          <span>※ 本伝票は社内会計処理および照合確認用として出力されたものです。</span>
-          <span>出力日時: {new Date().toLocaleString('ja-JP')}</span>
         </div>
       </div>
     </div>

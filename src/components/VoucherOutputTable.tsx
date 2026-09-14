@@ -32,9 +32,7 @@ export const VoucherOutputTable: React.FC<VoucherOutputTableProps> = ({
   const detailTitle =
     method === '前受入金'
       ? '計画明細'
-      : currency === 'JPY'
-      ? '売掛明細'
-      : 'Invoice明細';
+      : '明細';
 
   const totalLabel = method === '前受入金' ? '合計前受額' : '合計売掛額';
 
@@ -79,7 +77,7 @@ export const VoucherOutputTable: React.FC<VoucherOutputTableProps> = ({
 
       {/* Grid: 2 columns left (Table) and 1 column right (Summary Totals) matching Streamlit out_col1, out_col2 */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* OUT COL 1: 計画明細 / 売掛明細 / Invoice明細 */}
+        {/* OUT COL 1: 計画明細 / 明細 */}
         <div className="lg:col-span-2 space-y-3">
           <div className="flex items-center justify-between">
             <h3 className="text-sm font-bold text-slate-800 flex items-center gap-1.5">
@@ -100,7 +98,7 @@ export const VoucherOutputTable: React.FC<VoucherOutputTableProps> = ({
                   <th className="py-2.5 px-3 text-center w-16">通貨</th>
                   <th className="py-2.5 px-3 text-right">外貨金額</th>
                   <th className="py-2.5 px-3 text-right">JPY換算額</th>
-                  <th className="py-2.5 px-3 text-center w-28">日付</th>
+                  <th className="py-2.5 px-3 text-center w-28">売掛日</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-200 bg-white">
